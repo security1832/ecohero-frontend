@@ -1,0 +1,52 @@
+import { useRef, useState } from "react";
+import Navbar from "./Navbar";
+import Webcam from "react-webcam";
+
+function ARCamera() {
+  const webcamRef = useRef(null);
+  const [filter, setFilter] = useState("none");
+
+  const applyFilter = (filterType) => {
+    setFilter(filterType);
+    // Mock AR: Real implementation requires @snap/camera-kit
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+      <Navbar />
+      <div className="p-8">
+        <h2 className="text-3xl font-bold text-green-600 dark:text-green-400">
+          AR Eco Camera
+        </h2>
+        <div className="mt-6">
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            className="w-full h-96 rounded-lg"
+            videoConstraints={{ facingMode: "user" }}
+          />
+          <div className="mt-4 flex space-x-4">
+            <button
+              onClick={() => applyFilter("leaf")}
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Leaf Filter
+            </button>
+            <button
+              onClick={() => applyFilter("recycle")}
+              className="px-4 py-2 bg-ecoBlue text-white rounded hover:bg-ecoBlue/80"
+            >
+              Recycle Filter
+            </button>
+          </div>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            Filter Applied: {filter}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ARCamera;

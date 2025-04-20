@@ -2,24 +2,41 @@ import Navbar from "./Navbar";
 
 function Leaderboard() {
   const leaders = [
-    { rank: 1, name: "GreenWarrior", points: 5000 },
-    { rank: 2, name: "EcoMaster", points: 4500 },
-    { rank: 3, name: "PlanetSaver", points: 4000 },
+    { rank: 1, name: "GreenWarrior", points: 5000, id: 1 },
+    { rank: 2, name: "EcoMaster", points: 4500, id: 2 },
+    { rank: 3, name: "PlanetSaver", points: 4000, id: 3 },
   ];
 
+  const followUser = (id) => {
+    alert(`Followed user with ID: ${id}`);
+    // Backend API call to follow user
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <Navbar />
       <div className="p-8">
-        <h2 className="text-3xl font-bold text-green-600">Global Leaderboard</h2>
+        <h2 className="text-3xl font-bold text-green-600 dark:text-green-400">
+          Global Leaderboard
+        </h2>
         <div className="mt-6">
           {leaders.map((leader) => (
             <div
               key={leader.rank}
-              className="bg-white p-4 rounded-lg shadow mb-4 flex justify-between"
+              className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow mb-4 flex justify-between items-center"
             >
-              <span>#{leader.rank} {leader.name}</span>
-              <span>{leader.points} Points</span>
+              <span className="dark:text-white">
+                #{leader.rank} {leader.name}
+              </span>
+              <div className="flex items-center space-x-4">
+                <span className="dark:text-white">{leader.points} Points</span>
+                <button
+                  onClick={() => followUser(leader.id)}
+                  className="px-4 py-2 bg-ecoPurple text-white rounded hover:bg-ecoPurple/80"
+                >
+                  Follow
+                </button>
+              </div>
             </div>
           ))}
         </div>
