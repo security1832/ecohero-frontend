@@ -4,12 +4,14 @@ function Home() {
       <div className="container mx-auto text-center">
         <img
           src="/ecohero-logo.png"
-          alt="EcoHero Logo"
+          alt="EcoHero Sustainability Logo"
           className="mx-auto mb-4 w-32"
         />
-        <h2 className="text-4xl font-bold mb-4 text-green-800">Welcome to EcoHero</h2>
+        <h1 className="text-4xl font-bold mb-4 text-green-800">
+          Welcome to EcoHero
+        </h1>
         <p className="text-lg mb-6 text-gray-700">
-          Join us in making the planet greener, one step at a time.
+          Join the sustainability movement for a greener planet with eco-friendly actions.
         </p>
         <a
           href="#contact"

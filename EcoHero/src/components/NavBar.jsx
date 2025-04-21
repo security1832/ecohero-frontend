@@ -1,90 +1,25 @@
-import { Link, useContext, useState } from "react";
-import { ThemeContext } from "../App";
-import { FaBell } from "react-icons/fa";
+import { useState } from 'react';
 
 function Navbar() {
-  const { theme, toggleTheme } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-green-600 text-white p-4 fixed w-full top-0 z-10">
+    <nav className="bg-green-600 p-4 fixed w-full top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">EcoHero</h1>
+        <h1 className="text-white text-2xl font-bold">EcoHero</h1>
         <div className="md:hidden">
           <button onClick={() => setIsOpen(!isOpen)} className="text-white">
-            {isOpen ? "Close" : "Menu"}
+            {isOpen ? 'Close' : 'Menu'}
           </button>
         </div>
-        <ul className={`md:flex space-x-4 ${isOpen ? "block" : "hidden"} md:block`}>
-          <li>
-            <Link to="/" className="hover:underline">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/dashboard" className="hover:underline">
-              Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link to="/challenges" className="hover:underline">
-              Challenges
-            </Link>
-          </li>
-          <li>
-            <Link to="/reels" className="hover:underline">
-              Reels
-            </Link>
-          </li>
-          <li>
-            <Link to="/live" className="hover:underline">
-              Live
-            </Link>
-          </li>
-          <li>
-            <Link to="/stories" className="hover:underline">
-              Stories
-            </Link>
-          </li>
-          <li>
-            <Link to="/chat" className="hover:underline">
-              Chat
-            </Link>
-          </li>
-          <li>
-            <Link to="/player" className="hover:underline">
-              Player
-            </Link>
-          </li>
-          <li>
-            <Link to="/market" className="hover:underline">
-              Market
-            </Link>
-          </li>
-          <li>
-            <Link to="/profile" className="hover:underline">
-              Profile
-            </Link>
-          </li>
-          <li>
-            <Link to="/calculator" className="hover:underline">
-              Calculator
-            </Link>
-          </li>
-          <li>
-            <Link to="/notifications" className="hover:underline">
-              <FaBell className="inline" />
-            </Link>
-          </li>
-          <li>
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full bg-white text-green-600"
-              aria-label="Toggle dark mode"
-            >
-              {theme === "light" ? "🌙" : "☀️"}
-            </button>
-          </li>
+        <ul className={`md:flex space-x-4 ${isOpen ? 'block' : 'hidden'} md:block`}>
+          <li><a href="#home" className="text-white hover:text-green-200">Home</a></li>
+          <li><a href="#about" className="text-white hover:text-green-200">About</a></li>
+          <li><a href="#tips" className="text-white hover:text-green-200">Tips</a></li>
+          <li><a href="#calculator" className="text-white hover:text-green-200">Calculator</a></li>
+          <li><a href="#pledge" className="text-white hover:text-green-200">Pledge</a></li>
+          <li><a href="#community" className="text-white hover:text-green-200">Community</a></li>
+          <li><a href="#contact" className="text-white hover:text-green-200">Contact</a></li>
         </ul>
       </div>
     </nav>

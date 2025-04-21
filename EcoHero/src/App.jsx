@@ -19,6 +19,8 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Tips from "./components/Tips";
 import Calculator from "./components/Calculator";
+import Pledge from "./components/Pledge";
+import Community from './components/Community';
 
 export const ThemeContext = createContext();
 
@@ -51,9 +53,11 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/tips" element={<Tips />} />
-            <Route path="/contact" element={<Contact />} />
             <Route path="/calculator" element={<Calculator />} />
+            <Route path="/pledge" element={<Pledge />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/community" element={<Community />} />
           </Routes>
         </BrowserRouter>
       </div>

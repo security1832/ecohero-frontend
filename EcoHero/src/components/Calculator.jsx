@@ -15,15 +15,15 @@ function Calculator() {
   };
 
   return (
-    <section id="calculator" className="py-20">
+    <section id="calculator" className="py-20 bg-green-100">
       <div className="container mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-4">Carbon Footprint Calculator</h2>
+        <h2 className="text-3xl font-bold mb-4 text-green-800">Carbon Footprint Calculator</h2>
         <form onSubmit={calculateFootprint} className="max-w-md mx-auto">
           <input
             type="number"
             name="electricity"
             placeholder="Monthly Electricity (kWh)"
-            className="w-full p-2 mb-4 border rounded"
+            className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
             onChange={handleChange}
             required
           />
@@ -31,20 +31,22 @@ function Calculator() {
             type="number"
             name="travel"
             placeholder="Annual Travel (miles)"
-            className="w-full p-2 mb-4 border rounded"
+            className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
             onChange={handleChange}
             required
           />
           <button
             type="submit"
-            className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700"
+            className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition"
           >
             Calculate
           </button>
         </form>
-        {result && (
-          <p className="mt-4 text-lg">
-            Your estimated carbon footprint: {result} kg CO₂/year
+        {result !== null && (
+          <p className="mt-4 text-lg text-gray-700">
+            Your estimated carbon footprint: <strong>{result} kg CO₂/year</strong>
+            <br />
+            {result > 5000 ? 'Try reducing travel!' : 'Great job, keep it green!'}
           </p>
         )}
       </div>
