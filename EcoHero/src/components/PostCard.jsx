@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Media from './Media';
 
 const PostCard = ({ post, isSponsored = false }) => {
+  const [likes, setLikes] = useState(post.likes || 0);
+  const [ecoEmoji, setEcoEmoji] = useState(null);
+
+  const handleLike = () => setLikes(likes + 1);
+  const handleEcoEmoji = (emoji) => setEcoEmoji(emoji);
+  const applyARFilter = (filter) => alert(`Applying ${filter} AR filter`);
+
   return (
     <div className={`bg-white p-4 mb-4 rounded-lg shadow-md ${isSponsored ? 'border-2 border-green-400' : ''}`}>
       {isSponsored && <span className="text-xs text-green-600 font-bold mb-2 block">Sponsored</span>}
@@ -26,8 +33,19 @@ const PostCard = ({ post, isSponsored = false }) => {
           src={post.media.url}
           alt={post.text}
           type={post.media.type || 'image'}
+          isLive={post.isLive}
+          onApplyARFilter={applyARFilter}
         />
       )}
+      <div className="flex justify-between mt-2">
+        <div className="flex space-x-2">
+          <button onClick={handleLike} className="text-green-600">{likes} 🌿</button>
+          <button onClick={() => handleEcoEmoji('🌳')} className="text-green-600">{ecoEmoji || '🌳'}</button>
+        </div>
+        {post.isLive && (
+          <button className="bg-blue-600 text-white p-1 rounded">Tip $5</button>
+        )}
+      </div>
       {isSponsored && (
         <a href={post.sponsorLink} className="text-green-600 underline text-sm">
           Learn More
@@ -44,13 +62,14 @@ PostCard.propTypes = {
     text: PropTypes.string.isRequired,
     timestamp: PropTypes.string.isRequired,
     isPro: PropTypes.bool,
+    likes: PropTypes.number,
+    isLive: PropTypes.bool,
     media: PropTypes.shape({
       url: PropTypes.string,
       type: PropTypes.string,
     }),
   }).isRequired,
   isSponsored: PropTypes.bool,
-  sponsorLink: PropTypes.string,
 };
 
 export default PostCard;

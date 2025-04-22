@@ -15,35 +15,20 @@ const Navbar = () => {
           EcoHero
         </Link>
         <div className="space-x-4">
-          <Link to="/" className="text-white hover:text-green-200">
-            Home
-          </Link>
-          <Link to="/feed" className="text-white hover:text-green-200">
-            Feed
-          </Link>
-          <Link to="/carbon-tracker" className="text-white hover:text-green-200">
-            Carbon Tracker
-          </Link>
-          <Link to="/marketplace" className="text-white hover:text-green-200">
-            Marketplace
-          </Link>
-          <Link to="/learn" className="text-white hover:text-green-200">
-            Learn
-          </Link>
-          <Link to="/chat" className="text-white hover:text-green-200">
-            Chat
-          </Link>
-          <Link to="/profile" className="text-white hover:text-green-200">
-            Profile
-          </Link>
+          <Link to="/" className="text-white hover:text-green-200">Home</Link>
+          <Link to="/feed" className="text-white hover:text-green-200">Feed</Link>
+          <Link to="/stories" className="text-white hover:text-green-200">Stories</Link>
+          <Link to="/carbon-tracker" className="text-white hover:text-green-200">Carbon Tracker</Link>
+          <Link to="/marketplace" className="text-white hover:text-green-200">Marketplace</Link>
+          <Link to="/learn" className="text-white hover:text-green-200">Learn</Link>
+          <Link to="/music" className="text-white hover:text-green-200">Music</Link>
+          <Link to="/chat" className="text-white hover:text-green-200">Chat</Link>
+          <Link to="/eco-world" className="text-white hover:text-green-200">Eco World</Link>
+          <Link to="/profile" className="text-white hover:text-green-200">Profile</Link>
           {token ? (
-            <button onClick={handleLogout} className="text-white hover:text-green-200">
-              Logout
-            </button>
+            <button onClick={handleLogout} className="text-white hover:text-green-200">Logout</button>
           ) : (
-            <Link to="/login" className="text-white hover:text-green-200">
-              Login
-            </Link>
+            <Link to="/login" className="text-white hover:text-green-200">Login</Link>
           )}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+impoimport React, { useState } from 'react';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -14,6 +14,12 @@ const CarbonTrackerScreen = () => {
 
   const calculateTotal = () => carbonData.transport + carbonData.food + carbonData.energy;
 
+  const getAISuggestion = () => {
+    if (carbonData.transport > 50) return 'Try carpooling or biking to reduce transport emissions!';
+    if (carbonData.food > 30) return 'Switch to plant-based meals to lower your food footprint!';
+    return 'Great job! Keep up your sustainable habits!';
+  };
+
   const buyOffset = async () => {
     const stripe = await stripePromise;
     try {
@@ -22,7 +28,7 @@ const CarbonTrackerScreen = () => {
         payment_method: 'pm_card_visa', // For testing
       });
       await stripe.confirmCardPayment(response.data.client_secret);
-      alert('Carbon offset purchased!');
+      alert('Carbon offset purchased with NFT certificate!');
     } catch (error) {
       console.error('Payment error:', error);
       alert('Payment failed');
@@ -63,15 +69,16 @@ const CarbonTrackerScreen = () => {
         />
       </div>
       <p className="text-gray-800 mb-4">Total Carbon Footprint: {calculateTotal()} kg CO2</p>
+      <p className="text-green-600 mb-4">AI Suggestion: {getAISuggestion()}</p>
       {isPro ? (
-        <p className="text-green-600 mb-4">Pro: View advanced analytics!</p>
+        <p className="text-green-600 mb-4">Pro: View advanced analytics (charts, trends)!</p>
       ) : (
         <button className="bg-green-600 text-white p-2 rounded mb-4">
-          Upgrade to Pro for Analytics
+          Upgrade to Pro for Analytics ($14.99/month)
         </button>
       )}
       <button onClick={buyOffset} className="bg-blue-600 text-white p-2 rounded">
-        Buy Carbon Offset ($10/ton)
+        Buy Carbon Offset with NFT ($10/ton)
       </button>
     </div>
   );

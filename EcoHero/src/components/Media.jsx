@@ -1,6 +1,51 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { trackEvent } from '../utils/analytics';
 
-function Media() {
+const Media = ({ src, alt, type = 'image', isLive = false, onApplyARFilter }) => {
+  if (type === 'image') {
+    return (
+      <div className="relative">
+        <img src={src} alt={alt} className="w-full h-48 object-cover rounded-lg" />
+        <button
+          onClick={() => onApplyARFilter('tree')}
+          className="absolute top-2 right-2 bg-green-600 text-white p-1 rounded"
+        >
+          Apply AR Filter
+        </button>
+      </div>
+    );
+  } else if (type === 'video') {
+    return (
+      <video
+        src={src}
+        controls
+        autoPlay={isLive}
+        className="w-full h-48 rounded-lg"
+      >
+        Your browser does not support the video tag.
+      </video>
+    );
+  } else if (type === 'live') {
+    return (
+      <div className="relative">
+        <video src={src} autoPlay muted className="w-full h-48 rounded-lg" />
+        <span className="absolute top-2 left-2 bg-red-600 text-white px-2 rounded">LIVE</span>
+      </div>
+    );
+  }
+  return null;
+};
+
+Media.propTypes = {
+  src: PropTypes.string.isRequired,
+  alt: PropTypes.string,
+  type: PropTypes.oneOf(['image', 'video', 'live']),
+  isLive: PropTypes.bool,
+  onApplyARFilter: PropTypes.func,
+};
+
+function MediaSection() {
   const mediaItems = [
     {
       id: 1,
@@ -42,4 +87,5 @@ function Media() {
   );
 }
 
+export { MediaSection };
 export default Media;
