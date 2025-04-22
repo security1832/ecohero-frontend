@@ -1,9 +1,12 @@
-// src/screens/CarbonTrackerScreen.jsx
 import React, { useState } from 'react';
+import axios from 'axios';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('your_stripe_publishable_key');
 
 const CarbonTrackerScreen = () => {
   const [carbonData, setCarbonData] = useState({ transport: 0, food: 0, energy: 0 });
-  const isPro = false; // Simulate user subscription status
+  const isPro = false;
 
   const handleInputChange = (e) => {
     setCarbonData({ ...carbonData, [e.target.name]: Number(e.target.value) });
@@ -11,9 +14,19 @@ const CarbonTrackerScreen = () => {
 
   const calculateTotal = () => carbonData.transport + carbonData.food + carbonData.energy;
 
-  const buyOffset = () => {
-    alert('Redirecting to purchase carbon offset...');
-    // Integrate with payment API (e.g., Stripe) for real implementation
+  const buyOffset = async () => {
+    const stripe = await stripePromise;
+    try {
+      const response = await axios.post('http://localhost:8000/api/payment/', {
+        amount: 10, // $10 for 1 ton
+        payment_method: 'pm_card_visa', // For testing
+      });
+      await stripe.confirmCardPayment(response.data.client_secret);
+      alert('Carbon offset purchased!');
+    } catch (error) {
+      console.error('Payment error:', error);
+      alert('Payment failed');
+    }
   };
 
   return (
@@ -51,7 +64,7 @@ const CarbonTrackerScreen = () => {
       </div>
       <p className="text-gray-800 mb-4">Total Carbon Footprint: {calculateTotal()} kg CO2</p>
       {isPro ? (
-        <p className="text-green-600 mb-4">Pro: View advanced analytics (charts, trends)!</p>
+        <p className="text-green-600 mb-4">Pro: View advanced analytics!</p>
       ) : (
         <button className="bg-green-600 text-white p-2 rounded mb-4">
           Upgrade to Pro for Analytics

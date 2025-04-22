@@ -26,6 +26,9 @@ import Pledge from './components/Pledge';
 import Community from './components/Community';
 import Learning from './components/Learning';
 import Media from './components/Media';
+import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignupScreen';
+import ChatScreen from './screens/ChatScreen';
 
 export const ThemeContext = createContext();
 
@@ -71,6 +74,9 @@ function App() {
             <Route path="/eco-market" element={<EcoMarket />} />
             <Route path="/eco-reels/:id" element={<EcoReels />} />
             <Route path="/eco-player/:id" element={<EcoPlayer />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/signup" element={<SignupScreen />} />
+            <Route path="/chat" element={<ChatScreen />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
