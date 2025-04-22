@@ -15,6 +15,18 @@ const Navbar = () => {
           <Link to="/feed" className="text-white hover:text-green-200">
             Feed
           </Link>
+          <Link to="/carbon-tracker" className="text-white hover:text-green-200">
+            Carbon Tracker
+          </Link>
+          <Link to="/marketplace" className="text-white hover:text-green-200">
+            Marketplace
+          </Link>
+          <Link to="/learn" className="text-white hover:text-green-200">
+            Learn
+          </Link>
+          <Link to="/profile" className="text-white hover:text-green-200">
+            Profile
+          </Link>
         </div>
       </div>
     </nav>

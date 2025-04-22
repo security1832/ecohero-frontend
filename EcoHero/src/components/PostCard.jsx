@@ -1,11 +1,11 @@
-// src/components/PostCard.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import Media from './Media';
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, isSponsored = false }) => {
   return (
-    <div className="bg-white p-4 mb-4 rounded-lg shadow-md">
+    <div className={`bg-white p-4 mb-4 rounded-lg shadow-md ${isSponsored ? 'border-2 border-green-400' : ''}`}>
+      {isSponsored && <span className="text-xs text-green-600 font-bold mb-2 block">Sponsored</span>}
       <div className="flex items-center mb-2">
         <img
           src={post.userAvatar || 'https://via.placeholder.com/40'}
@@ -13,7 +13,10 @@ const PostCard = ({ post }) => {
           className="w-10 h-10 rounded-full mr-2"
         />
         <div>
-          <h3 className="text-green-700 font-semibold">{post.username}</h3>
+          <h3 className="text-green-700 font-semibold">
+            {post.username}
+            {post.isPro && <span className="ml-2 text-yellow-500">★ Pro</span>}
+          </h3>
           <p className="text-gray-500 text-sm">{new Date(post.timestamp).toLocaleString()}</p>
         </div>
       </div>
@@ -25,6 +28,11 @@ const PostCard = ({ post }) => {
           type={post.media.type || 'image'}
         />
       )}
+      {isSponsored && (
+        <a href={post.sponsorLink} className="text-green-600 underline text-sm">
+          Learn More
+        </a>
+      )}
     </div>
   );
 };
@@ -35,11 +43,14 @@ PostCard.propTypes = {
     userAvatar: PropTypes.string,
     text: PropTypes.string.isRequired,
     timestamp: PropTypes.string.isRequired,
+    isPro: PropTypes.bool,
     media: PropTypes.shape({
       url: PropTypes.string,
       type: PropTypes.string,
     }),
   }).isRequired,
+  isSponsored: PropTypes.bool,
+  sponsorLink: PropTypes.string,
 };
 
 export default PostCard;

@@ -1,19 +1,346 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="EcoHero: Join the movement for a greener planet." />
-    <meta name="keywords" content="sustainability, eco-friendly, green living" />
-    <meta property="og:title" content="EcoHero" />
-    <meta property="og:description" content="Promoting sustainable living." />
-    <meta property="og:image" content="/ecohero-logo.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" href="/ecohero-logo.png" />
-    <title>EcoHero</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+// Media.jsx
+const Media = ({ src, alt, type = 'image' }) => {
+  if (type === 'image') {
+    return <img src={src} alt={alt} className="w-full h-48 object-cover rounded-lg" />;
+  } else if (type === 'video') {
+    return (
+      <video src={src} controls className="w-full h-48 rounded-lg">
+        Your browser does not support the video tag.
+      </video>
+    );
+  }
+  return null;
+};
+Media.propTypes = {
+  src: PropTypes.string.isRequired,
+  alt: PropTypes.string,
+  type: PropTypes.oneOf(['image', 'video']),
+};
+
+// PostCard.jsx
+const PostCard = ({ post, isSponsored = false }) => {
+  return (
+    <div className={`bg-white p-4 mb-4 rounded-lg shadow-md ${isSponsored ? 'border-2 border-green-400' : ''}`}>
+      {isSponsored && <span className="text-xs text-green-600 font-bold mb-2 block">Sponsored</span>}
+      <div className="flex items-center mb-2">
+        <img
+          src={post.userAvatar || 'https://via.placeholder.com/40'}
+          alt="User avatar"
+          className="w-10 h-10 rounded-full mr-2"
+        />
+        <div>
+          <h3 className="text-green-700 font-semibold">
+            {post.username}
+            {post.isPro && <span className="ml-2 text-yellow-500">★ Pro</span>}
+          </h3>
+          <p className="text-gray-500 text-sm">{new Date(post.timestamp).toLocaleString()}</p>
+        </div>
+      </div>
+      <p className="text-gray-800 mb-2">{post.text}</p>
+      {post.media && (
+        <Media
+          src={post.media.url}
+          alt={post.text}
+          type={post.media.type || 'image'}
+        />
+      )}
+      {isSponsored && (
+        <a href={post.sponsorLink} className="text-green-600 underline text-sm">
+          Learn More
+        </a>
+      )}
+    </div>
+  );
+};
+PostCard.propTypes = {
+  post: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    userAvatar: PropTypes.string,
+    text: PropTypes.string.isRequired,
+    timestamp: PropTypes.string.isRequired,
+    isPro: PropTypes.bool,
+    media: PropTypes.shape({
+      url: PropTypes.string,
+      type: PropTypes.string,
+    }),
+  }).isRequired,
+  isSponsored: PropTypes.bool,
+  sponsorLink: PropTypes.string,
+};
+
+// FeedScreen.jsx
+const dummyPosts = [
+  {
+    username: 'EcoWarrior',
+    userAvatar: 'https://via.placeholder.com/40',
+    text: 'Planted 10 trees today! 🌳',
+    timestamp: '2025-04-22T10:00:00Z',
+    isPro: true,
+    media: { url: 'https://via.placeholder.com/300', type: 'image' },
+  },
+  {
+    username: 'GreenBrand',
+    text: 'Discover our eco-friendly water bottles! #SustainableLiving',
+    timestamp: '2025-04-22T09:30:00Z',
+    isSponsored: true,
+    sponsorLink: 'https://example.com/eco-bottles',
+  },
+  {
+    username: 'GreenLiving',
+    text: 'Switched to reusable straws! #EcoHero',
+    timestamp: '2025-04-22T09:00:00Z',
+  },
+];
+const FeedScreen = () => {
+  return (
+    <div className="p-4 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl font-bold text-green-700 mb-4">Community Feed</h2>
+      <p className="text-gray-600 mb-4">Earn points by liking or sharing posts!</p>
+      {dummyPosts.map((post, index) => (
+        <PostCard
+          key={index}
+          post={post}
+          isSponsored={post.isSponsored || false}
+          sponsorLink={post.sponsorLink}
+        />
+      ))}
+    </div>
+  );
+};
+
+// CarbonTrackerScreen.jsx
+const CarbonTrackerScreen = () => {
+  const [carbonData, setCarbonData] = useState({ transport: 0, food: 0, energy: 0 });
+  const isPro = false;
+  const handleInputChange = (e) => {
+    setCarbonData({ ...carbonData, [e.target.name]: Number(e.target.value) });
+  };
+  const calculateTotal = () => carbonData.transport + carbonData.food + carbonData.energy;
+  const buyOffset = () => {
+    alert('Redirecting to purchase carbon offset...');
+  };
+  return (
+    <div className="p-4 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl font-bold text-green-700 mb-4">Carbon Tracker</h2>
+      <div className="mb-4">
+        <label className="block text-gray-700">Transport (kg CO2)</label>
+        <input
+          type="number"
+          name="transport"
+          value={carbonData.transport}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700">Food (kg CO2)</label>
+        <input
+          type="number"
+          name="food"
+          value={carbonData.food}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700">Energy (kg CO2)</label>
+        <input
+          type="number"
+          name="energy"
+          value={carbonData.energy}
+          onChange={handleInputChange}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+      <p className="text-gray-800 mb-4">Total Carbon Footprint: {calculateTotal()} kg CO2</p>
+      {isPro ? (
+        <p className="text-green-600 mb-4">Pro: View advanced analytics (charts, trends)!</p>
+      ) : (
+        <button className="bg-green-600 text-white p-2 rounded mb-4">
+          Upgrade to Pro for Analytics
+        </button>
+      )}
+      <button onClick={buyOffset} className="bg-blue-600 text-white p-2 rounded">
+        Buy Carbon Offset ($10/ton)
+      </button>
+    </div>
+  );
+};
+
+// MarketplaceScreen.jsx
+const products = [
+  {
+    id: 1,
+    name: 'Reusable Water Bottle',
+    price: 19.99,
+    affiliateLink: 'https://example.com/bottle',
+    image: 'https://via.placeholder.com/150',
+  },
+  {
+    id: 2,
+    name: 'Second-Hand Jacket',
+    price: 29.99,
+    seller: 'EcoUser123',
+    image: 'https://via.placeholder.com/150',
+  },
+];
+const MarketplaceScreen = () => {
+  return (
+    <div className="p-4 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl font-bold text-green-700 mb-4">Eco Marketplace</h2>
+      <div className="grid grid-cols-2 gap-4">
+        {products.map((product) => (
+          <div key={product.id} className="bg-white p-4 rounded-lg shadow-md">
+            <img src={product.image} alt={product.name} className="w-full h-32 object-cover rounded mb-2" />
+            <h3 className="text-green-700 font-semibold">{product.name}</h3>
+            <p className="text-gray-800">${product.price}</p>
+            {product.seller && <p className="text-gray-500 text-sm">Sold by: {product.seller}</p>}
+            <a
+              href={product.affiliateLink || '#'}
+              className="bg-green-600 text-white p-2 rounded mt-2 block text-center"
+            >
+              Buy Now
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// LearnScreen.jsx
+const courses = [
+  { id: 1, title: 'Intro to Sustainable Living', price: 49.99, isFree: false },
+  { id: 2, title: 'Eco-Friendly Habits', price: 0, isFree: true },
+];
+const LearnScreen = () => {
+  return (
+    <div className="p-4 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl font-bold text-green-700 mb-4">Learn Sustainability</h2>
+      {courses.map((course) => (
+        <div key={course.id} className="bg-white p-4 mb-4 rounded-lg shadow-md">
+          <h3 className="text-green-700 font-semibold">{course.title}</h3>
+          <p className="text-gray-800">{course.isFree ? 'Free' : `$${course.price}`}</p>
+          <button className="bg-green-600 text-white p-2 rounded mt-2">
+            {course.isFree ? 'Start Now' : 'Enroll Now'}
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ProfileScreen.jsx
+const user = {
+  username: 'EcoUser',
+  points: 1500,
+  badges: ['Tree Planter', 'Zero Waste'],
+  isPro: false,
+};
+const ProfileScreen = () => {
+  return (
+    <div className="p-4 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl font-bold text-green-700 mb-4">{user.username}'s Profile</h2>
+      <div className="bg-white p-4 rounded-lg shadow-md mb-4">
+        <p className="text-gray-800">Points: {user.points}</p>
+        <p className="text-gray-800">Badges: {user.badges.join(', ')}</p>
+        {user.isPro ? (
+          <p className="text-green-600">EcoHero Pro Member</p>
+        ) : (
+          <button className="bg-green-600 text-white p-2 rounded mt-2">
+            Upgrade to Pro ($9.99/month)
+          </button>
+        )}
+      </div>
+      <div className="bg-white p-4 rounded-lg shadow-md">
+        <h3 className="text-green-700 font-semibold mb-2">Eco Challenges</h3>
+        <button className="bg-blue-600 text-white p-2 rounded">
+          Join Paid Challenge ($5 entry, win prizes!)
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// HomeScreen.jsx
+const HomeScreen = () => {
+  return (
+    <div className="p-4 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold text-green-700 mb-4">Welcome to EcoHero</h1>
+      <p className="text-gray-800 mb-4">Join the movement for sustainable living!</p>
+      <div className="grid grid-cols-1 gap-4">
+        <Link to="/feed" className="bg-green-600 text-white p-4 rounded-lg text-center">
+          View Community Feed
+        </Link>
+        <Link to="/carbon-tracker" className="bg-green-600 text-white p-4 rounded-lg text-center">
+          Track Your Carbon Footprint
+        </Link>
+        <Link to="/marketplace" className="bg-green-600 text-white p-4 rounded-lg text-center">
+          Shop Eco-Friendly Products
+        </Link>
+        <Link to="/learn" className="bg-green-600 text-white p-4 rounded-lg text-center">
+          Learn Sustainability
+        </Link>
+        <Link to="/profile" className="bg-green-600 text-white p-4 rounded-lg text-center">
+          View Your Profile & Badges
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+// Navbar.jsx
+const Navbar = () => {
+  return (
+    <nav className="bg-green-600 p-4 shadow-md">
+      <div className="container mx-auto flex justify-between items-center">
+        <Link to="/" className="text-white text-xl font-bold">
+          EcoHero
+        </Link>
+        <div className="space-x-4">
+          <Link to="/" className="text-white hover:text-green-200">
+            Home
+          </Link>
+          <Link to="/feed" className="text-white hover:text-green-200">
+            Feed
+          </Link>
+          <Link to="/carbon-tracker" className="text-white hover:text-green-200">
+            Carbon Tracker
+          </Link>
+          <Link to="/marketplace" className="text-white hover:text-green-200">
+            Marketplace
+          </Link>
+          <Link to="/learn" className="text-white hover:text-green-200">
+            Learn
+          </Link>
+          <Link to="/profile" className="text-white hover:text-green-200">
+            Profile
+          </Link>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+// App.jsx
+const App = () => {
+  return (
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/feed" element={<FeedScreen />} />
+          <Route path="/carbon-tracker" element={<CarbonTrackerScreen />} />
+          <Route path="/marketplace" element={<MarketplaceScreen />} />
+          <Route path="/learn" element={<LearnScreen />} />
+          <Route path="/profile" element={<ProfileScreen />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
+};
+
+// Render
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);

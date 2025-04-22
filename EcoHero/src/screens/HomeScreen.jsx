@@ -1,4 +1,3 @@
-// src/screens/HomeScreen.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,9 +10,18 @@ const HomeScreen = () => {
         <Link to="/feed" className="bg-green-600 text-white p-4 rounded-lg text-center">
           View Community Feed
         </Link>
-        <button className="bg-green-600 text-white p-4 rounded-lg">
-          Track Carbon Footprint (Coming Soon)
-        </button>
+        <Link to="/carbon-tracker" className="bg-green-600 text-white p-4 rounded-lg text-center">
+          Track Your Carbon Footprint
+        </Link>
+        <Link to="/marketplace" className="bg-green-600 text-white p-4 rounded-lg text-center">
+          Shop Eco-Friendly Products
+        </Link>
+        <Link to="/learn" className="bg-green-600 text-white p-4 rounded-lg text-center">
+          Learn Sustainability
+        </Link>
+        <Link to="/profile" className="bg-green-600 text-white p-4 rounded-lg text-center">
+          View Your Profile & Badges
+        </Link>
       </div>
     </div>
   );
