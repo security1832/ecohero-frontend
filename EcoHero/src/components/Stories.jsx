@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../layout/NavBar";
 import { motion } from "framer-motion";
 
 function Stories() {

@@ -1,4 +1,4 @@
-import Navbar from "./Navbar";
+import Navbar from "../layout/NavBar";
 import ReactPlayer from "react-player";
 
 function EcoPlayer() {

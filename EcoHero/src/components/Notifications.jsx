@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../layout/NavBar";
 import { socket } from "../utils/socket";
 
 function Notifications() {

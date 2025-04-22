@@ -17,15 +17,22 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         icons: [
+          { src: '/ecohero-logo.png', sizes: '192x192', type: 'image/png' },
+          { src: '/ecohero-logo.png', sizes: '512x512', type: 'image/png' },
+        ],
+      },
+      workbox: {
+        runtimeCaching: [
           {
-            src: '/ecohero-logo.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/ecohero-logo.png',
-            sizes: '512x512',
-            type: 'image/png',
+            urlPattern: /^https:\/\/your-backend-api\.com\/.*/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // Cache for 30 days
+              },
+            },
           },
         ],
       },

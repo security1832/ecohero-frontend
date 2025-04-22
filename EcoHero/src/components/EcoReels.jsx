@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../layout/NavBar";
 import ReactPlayer from "react-player";
 import { FaHeart, FaComment, FaShareAlt } from "react-icons/fa";
 

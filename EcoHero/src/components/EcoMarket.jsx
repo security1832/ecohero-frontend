@@ -1,4 +1,4 @@
-import Navbar from "./Navbar";
+import Navbar from "../layout/NavBar";
 import { motion } from "framer-motion";
 
 function EcoMarket() {
