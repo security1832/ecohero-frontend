@@ -1,4 +1,3 @@
-// src/screens/StoriesScreen.jsx
 import React, { useState } from 'react';
 import Media from '../components/Media';
 
@@ -8,12 +7,14 @@ const dummyStories = [
     username: 'EcoStar',
     media: { url: 'https://via.placeholder.com/300', type: 'image' },
     timestamp: '2025-04-22T11:00:00Z',
+    collaborators: ['GreenVibes'],
   },
   {
     id: 2,
     username: 'GreenVibes',
     media: { url: 'https://via.placeholder.com/300', type: 'video' },
     timestamp: '2025-04-22T10:30:00Z',
+    isSponsored: true,
   },
 ];
 
@@ -46,7 +47,15 @@ const StoriesScreen = () => {
           type={dummyStories[currentStory].media.type}
           onApplyARFilter={applyARFilter}
         />
-        <p className="text-gray-800 mt-2">{dummyStories[currentStory].username}</p>
+        <p className="text-gray-800 mt-2">
+          {dummyStories[currentStory].username}
+          {dummyStories[currentStory].collaborators &&
+            dummyStories[currentStory].collaborators.length > 0 &&
+            ` with ${dummyStories[currentStory].collaborators.join(', ')}`}
+        </p>
+        {dummyStories[currentStory].isSponsored && (
+          <p className="text-green-600 text-sm font-bold">Sponsored</p>
+        )}
       </div>
     </div>
   );

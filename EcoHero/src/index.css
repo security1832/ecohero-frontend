@@ -19,7 +19,32 @@ html.dark {
 }@tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+}
+
+html {
+  @apply bg-gray-100;
+}
+
+html.dark {
+  @apply bg-gray-900;
+}
+
+.chat-bubble {
+  @apply p-3 rounded-lg max-w-xs;
+}
+
+.video-player {
+  @apply w-full h-64 md:h-96 rounded-lg;
+}
 body {
   font-family: 'Arial', sans-serif;
   margin: 0;

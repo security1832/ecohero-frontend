@@ -1,4 +1,3 @@
-// src/screens/ChatScreen.jsx
 import React, { useState, useEffect } from 'react';
 
 const ChatScreen = () => {
@@ -19,7 +18,12 @@ const ChatScreen = () => {
   const sendMessage = () => {
     if (ws && message) {
       ws.send(JSON.stringify({ message }));
+      setMessages((prev) => [...prev, { message, user: 'You' }]);
       setMessage('');
+      // Simulate AI moderation
+      setTimeout(() => {
+        setMessages((prev) => [...prev, { message: 'Great eco-tip!', user: 'AI Moderator' }]);
+      }, 1000);
     }
   };
 
@@ -28,7 +32,9 @@ const ChatScreen = () => {
       <h2 className="text-2xl font-bold text-green-700 mb-4">EcoHero Chat</h2>
       <div className="bg-white p-4 rounded-lg shadow-md mb-4 h-96 overflow-y-auto">
         {messages.map((msg, index) => (
-          <p key={index} className="text-gray-800">{msg.message}</p>
+          <p key={index} className="text-gray-800">
+            <strong>{msg.user || 'Anonymous'}:</strong> {msg.message}
+          </p>
         ))}
       </div>
       <div className="flex">

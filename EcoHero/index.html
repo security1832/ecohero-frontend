@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EcoHero: The ultimate eco-friendly social platform" />
   <title>EcoHero</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
@@ -13,14 +14,27 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#16a34a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+    }
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
     const { useState, useEffect } = React;
-    const { BrowserRouter, Routes, Route, Link, useNavigate } = ReactRouterDOM;
 
-    // Media.jsx
+    // Media Component
     const Media = ({ src, alt, type = 'image', isLive = false, onApplyARFilter }) => {
       if (type === 'image') {
         return (
@@ -55,15 +69,8 @@
       }
       return null;
     };
-    Media.propTypes = {
-      src: PropTypes.string.isRequired,
-      alt: PropTypes.string,
-      type: PropTypes.oneOf(['image', 'video', 'live']),
-      isLive: PropTypes.bool,
-      onApplyARFilter: PropTypes.func,
-    };
 
-    // PostCard.jsx
+    // PostCard Component
     const PostCard = ({ post, isSponsored = false }) => {
       const [likes, setLikes] = useState(post.likes || 0);
       const [ecoEmoji, setEcoEmoji] = useState(null);
@@ -114,24 +121,8 @@
         </div>
       );
     };
-    PostCard.propTypes = {
-      post: PropTypes.shape({
-        username: PropTypes.string.isRequired,
-        userAvatar: PropTypes.string,
-        text: PropTypes.string.isRequired,
-        timestamp: PropTypes.string.isRequired,
-        isPro: PropTypes.bool,
-        likes: PropTypes.number,
-        isLive: PropTypes.bool,
-        media: PropTypes.shape({
-          url: PropTypes.string,
-          type: PropTypes.string,
-        }),
-      }).isRequired,
-      isSponsored: PropTypes.bool,
-    };
 
-    // FeedScreen.jsx
+    // FeedScreen Component
     const dummyPosts = [
       {
         username: 'EcoWarrior',
@@ -176,13 +167,646 @@
       );
     };
 
-    // Render
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<FeedScreen />);
+    // AuctionScreen Component
+    const AuctionScreen = () => {
+      const auctions = [
+        { id: 1, title: 'Aweer Handwoven Basket', currentBid: 500, image: 'https://via.placeholder.com/150' },
+        { id: 2, title: 'Solar Microgrid Patent', currentBid: 50000, image: 'https://via.placeholder.com/150' },
+        { id: 3, title: 'Maasai Beaded Necklace', currentBid: 200, image: 'https://via.placeholder.com/150' },
+      ];
+
+      const placeBid = (title) => alert(`Placing bid on ${title}`);
+      const view3D = (title) => alert(`Viewing ${title} in 3D`);
+      const buyNow = (title) => alert(`Buying ${title} instantly`);
+
+      return (
+        <div className="p-4 bg-gray-100 min-h-screen">
+          <h2 className="text-2xl font-bold text-green-700 mb-4">Global Eco-Auctions</h2>
+          <p className="text-gray-600 mb-4">Bid on unique items and patents!</p>
+          <div className="grid grid-cols-2 gap-4">
+            {auctions.map((auction) => (
+              <div key={auction.id} className="bg-white p-4 rounded-lg shadow-md">
+                <img src={auction.image} alt={auction.title} className="w-full h-32 object-cover rounded mb-2" />
+                <h3 className="text-green-700 font-semibold">{auction.title}</h3>
+                <p className="text-gray-800">Current Bid: ${auction.currentBid}</p>
+                <button
+                  onClick={() => view3D(auction.title)}
+                  className="bg-blue-600 text-white p-2 rounded mt-2 block text-center"
+                  aria-label={`View ${auction.title} in 3D`}
+                >
+                  View in 3D
+                </button>
+                <button
+                  onClick={() => placeBid(auction.title)}
+                  className="bg-green-600 text-white p-2 rounded mt-2 block text-center"
+                  aria-label={`Bid on ${auction.title}`}
+                >
+                  Place Bid
+                </button>
+                <button
+                  onClick={() => buyNow(auction.title)}
+                  className="bg-red-600 text-white p-2 rounded mt-2 block text-center"
+                  aria-label={`Buy ${auction.title} now`}
+                >
+                  Buy Now
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // CreatorStudioScreen Component
+    const CreatorStudioScreen = () => {
+      const tools = [
+        { id: 1, title: 'AI Content Optimizer', price: 9.99 },
+        { id: 2, title: 'NFT Creator', price: 0 },
+        { id: 3, title: 'Subscription Manager', price: 49.99 },
+      ];
+
+      const useTool = (title) => alert(`Using ${title}`);
+      const createNFT = () => alert('Creating eco-NFT');
+      const optimizeContent = () => alert('Optimizing content with AI');
+
+      return (
+        <div className="p-4 bg-gray-100 min-h-screen">
+          <h2 className="text-2xl font-bold text-green-700 mb-4">Creator Studio</h2>
+          <p className="text-gray-600 mb-4">Monetize your eco-content!</p>
+          {tools.map((tool) => (
+            <div key={tool.id} className="bg-white p-4 mb-4 rounded-lg shadow-md">
+              <h3 className="text-green-700 font-semibold">{tool.title}</h3>
+              <p className="text-gray-800">{tool.price > 0 ? `$${tool.price}/month` : 'Free'}</p>
+              <button
+                onClick={() => useTool(tool.title)}
+                className="bg-green-600 text-white p-2 rounded mt-2"
+                aria-label={`Use ${tool.title}`}
+              >
+                Use Now
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={createNFT}
+            className="bg-purple-600 text-white p-2 rounded mt-2"
+            aria-label="Create NFT"
+          >
+            Create NFT (Free)
+          </button>
+          <button
+            onClick={optimizeContent}
+            className="bg-pink-600 text-white p-2 rounded mt-2 ml-2"
+            aria-label="Optimize content"
+          >
+            Optimize Content ($9.99)
+          </button>
+        </div>
+      );
+    };
+
+    // InvestmentScreen Component
+    const InvestmentScreen = () => {
+      const investments = [
+        { id: 1, title: 'Eco-Startup Fund', stake: 1000, return: '10% Revenue' },
+        { id: 2, title: 'Eco-Coin Futures', stake: 100, return: '5% Profit' },
+      ];
+
+      const invest = (title) => alert(`Investing in ${title}`);
+      const pitchIdea = () => alert('Pitching to eco-incubator');
+      const tradeFutures = () => alert('Trading eco-coin futures');
+
+      return (
+        <div className="p-4 bg-gray-100 min-h-screen">
+          <h2 className="text-2xl font-bold text-green-700 mb-4">Eco Investment Hub</h2>
+          <p className="text-gray-600 mb-4">Grow your eco-wealth!</p>
+          {investments.map((inv) => (
+            <div key={inv.id} className="bg-white p-4 mb-4 rounded-lg shadow-md">
+              <h3 className="text-green-700 font-semibold">{inv.title}</h3>
+              <p className="text-gray-800">Stake: {inv.stake} Tokens</p>
+              <p className="text-gray-800">Return: {inv.return}</p>
+              <button
+                onClick={() => invest(inv.title)}
+                className="bg-green-600 text-white p-2 rounded mt-2"
+                aria-label={`Invest in ${inv.title}`}
+              >
+                Invest Now
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={pitchIdea}
+            className="bg-blue-600 text-white p-2 rounded mt-2"
+            aria-label="Pitch idea"
+          >
+            Pitch to Incubator
+          </button>
+          <button
+            onClick={tradeFutures}
+            className="bg-purple-600 text-white p-2 rounded mt-2 ml-2"
+            aria-label="Trade futures"
+          >
+            Trade Futures ($0.10/trade)
+          </button>
+        </div>
+      );
+    };
+
+    // App Component
+    const App = () => {
+      const [activeScreen, setActiveScreen] = useState('Feed');
+      const [isDarkMode, setIsDarkMode] = useState(false);
+      const [language, setLanguage] = useState('en');
+      const [isLowData, setIsLowData] = useState(false);
+
+      useEffect(() => {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js').catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+        }
+      }, []);
+
+      const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
+      const changeLanguage = (lang) => setLanguage(lang);
+      const toggleLowData = () => setIsLowData(!isLowData);
+
+      const screens = {
+        Feed: <FeedScreen />,
+        Auction: <AuctionScreen />,
+        CreatorStudio: <CreatorStudioScreen />,
+        Investment: <InvestmentScreen />,
+      };
+
+      return (
+        <div className={`${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} min-h-screen`}>
+          <nav className="bg-green-600 p-4 flex justify-between items-center">
+            <h1 className="text-white text-xl font-bold">EcoHero</h1>
+            <div className="flex space-x-2">
+              <button
+                onClick={toggleDarkMode}
+                className="text-white"
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDarkMode ? '☀️' : '🌙'}
+              </button>
+              <select
+                value={language}
+                onChange={(e) => changeLanguage(e.target.value)}
+                className="bg-white text-green-600 p-1 rounded"
+                aria-label="Select language"
+              >
+                <option value="en">English</option>
+                <option value="sw">Swahili</option>
+                <option value="aweer">Aweer</option>
+              </select>
+              <button
+                onClick={toggleLowData}
+                className="text-white"
+                aria-label={isLowData ? 'Disable low data mode' : 'Enable low data mode'}
+              >
+                {isLowData ? '📶' : '📴'}
+              </button>
+            </div>
+          </nav>
+          <div className="flex justify-around bg-green-700 p-2">
+            {Object.keys(screens).map((screen) => (
+              <button
+                key={screen}
+                onClick={() => setActiveScreen(screen)}
+                className={`text-white p-2 rounded ${activeScreen === screen ? 'bg-green-800' : ''}`}
+                aria-label={`Go to ${screen} screen`}
+              >
+                {screen}
+              </button>
+            ))}
+          </div>
+          <main>{screens[activeScreen]}</main>
+          <footer className="bg-green-600 text-white p-4 text-center">
+            <p>EcoHero © 2025 | Earn Eco-Tokens Today!</p>
+            <button className="bg-yellow-600 text-white p-2 rounded mt-2" aria-label="Refer a friend">
+              Refer & Earn 500 Tokens
+            </button>
+          </footer>
+        </div>
+      );
+    };
+
+    // Render App
+    ReactDOM.render(<App />, document.getElementById('root'));
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js');
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+      });
+    }
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EcoHero: The ultimate eco-friendly social platform" />
+  <title>EcoHero</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-router-dom@6.16.0/dist/umd/react-router-dom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prop-types@15.8.1/prop-types.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#16a34a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+    }
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // Media Component
+    const Media = ({ src, alt, type = 'image', isLive = false, onApplyARFilter }) => {
+      if (type === 'image') {
+        return (
+          <div className="relative">
+            <img src={src} alt={alt} className="w-full h-48 object-cover rounded-lg" />
+            <button
+              onClick={() => onApplyARFilter('tree')}
+              className="absolute top-2 right-2 bg-green-600 text-white p-1 rounded"
+            >
+              Apply AR Filter
+            </button>
+          </div>
+        );
+      } else if (type === 'video') {
+        return (
+          <video
+            src={src}
+            controls
+            autoPlay={isLive}
+            className="w-full h-48 rounded-lg"
+          >
+            Your browser does not support the video tag.
+          </video>
+        );
+      } else if (type === 'live') {
+        return (
+          <div className="relative">
+            <video src={src} autoPlay muted className="w-full h-48 rounded-lg" />
+            <span className="absolute top-2 left-2 bg-red-600 text-white px-2 rounded">LIVE</span>
+          </div>
+        );
+      }
+      return null;
+    };
+
+    // PostCard Component
+    const PostCard = ({ post, isSponsored = false }) => {
+      const [likes, setLikes] = useState(post.likes || 0);
+      const [ecoEmoji, setEcoEmoji] = useState(null);
+      const handleLike = () => setLikes(likes + 1);
+      const handleEcoEmoji = (emoji) => setEcoEmoji(emoji);
+      const applyARFilter = (filter) => alert(`Applying ${filter} AR filter`);
+      return (
+        <div className={`bg-white p-4 mb-4 rounded-lg shadow-md ${isSponsored ? 'border-2 border-green-400' : ''}`}>
+          {isSponsored && <span className="text-xs text-green-600 font-bold mb-2 block">Sponsored</span>}
+          <div className="flex items-center mb-2">
+            <img
+              src={post.userAvatar || 'https://via.placeholder.com/40'}
+              alt="User avatar"
+              className="w-10 h-10 rounded-full mr-2"
+            />
+            <div>
+              <h3 className="text-green-700 font-semibold">
+                {post.username}
+                {post.isPro && <span className="ml-2 text-yellow-500">★ Pro</span>}
+              </h3>
+              <p className="text-gray-500 text-sm">{new Date(post.timestamp).toLocaleString()}</p>
+            </div>
+          </div>
+          <p className="text-gray-800 mb-2">{post.text}</p>
+          {post.media && (
+            <Media
+              src={post.media.url}
+              alt={post.text}
+              type={post.media.type || 'image'}
+              isLive={post.isLive}
+              onApplyARFilter={applyARFilter}
+            />
+          )}
+          <div className="flex justify-between mt-2">
+            <div className="flex space-x-2">
+              <button onClick={handleLike} className="text-green-600">{likes} 🌿</button>
+              <button onClick={() => handleEcoEmoji('🌳')} className="text-green-600">{ecoEmoji || '🌳'}</button>
+            </div>
+            {post.isLive && (
+              <button className="bg-blue-600 text-white p-1 rounded">Tip $5</button>
+            )}
+          </div>
+          {isSponsored && (
+            <a href={post.sponsorLink} className="text-green-600 underline text-sm">
+              Learn More
+            </a>
+          )}
+        </div>
+      );
+    };
+
+    // FeedScreen Component
+    const dummyPosts = [
+      {
+        username: 'EcoWarrior',
+        userAvatar: 'https://via.placeholder.com/40',
+        text: 'Planted 10 trees today! 🌳',
+        timestamp: '2025-04-22T10:00:00Z',
+        isPro: true,
+        media: { url: 'https://via.placeholder.com/300', type: 'video' },
+        likes: 100,
+      },
+      {
+        username: 'GreenBrand',
+        text: 'Discover our eco-friendly water bottles! #SustainableLiving',
+        timestamp: '2025-04-22T09:30:00Z',
+        isSponsored: true,
+        sponsorLink: 'https://example.com/eco-bottles',
+        likes: 50,
+      },
+      {
+        username: 'GreenLiving',
+        text: 'Live eco-event starting now! Join us!',
+        timestamp: '2025-04-22T09:00:00Z',
+        isLive: true,
+        media: { url: 'https://via.placeholder.com/300', type: 'live' },
+        likes: 200,
+      },
+    ];
+    const FeedScreen = () => {
+      return (
+        <div className="p-4 bg-gray-100 min-h-screen">
+          <h2 className="text-2xl font-bold text-green-700 mb-4">Community Feed</h2>
+          <p className="text-gray-600 mb-4">Earn points by liking or sharing posts!</p>
+          {dummyPosts.map((post, index) => (
+            <PostCard
+              key={index}
+              post={post}
+              isSponsored={post.isSponsored || false}
+              sponsorLink={post.sponsorLink}
+            />
+          ))}
+        </div>
+      );
+    };
+
+    // AuctionScreen Component
+    const AuctionScreen = () => {
+      const auctions = [
+        { id: 1, title: 'Aweer Handwoven Basket', currentBid: 500, image: 'https://via.placeholder.com/150' },
+        { id: 2, title: 'Solar Microgrid Patent', currentBid: 50000, image: 'https://via.placeholder.com/150' },
+        { id: 3, title: 'Maasai Beaded Necklace', currentBid: 200, image: 'https://via.placeholder.com/150' },
+      ];
+
+      const placeBid = (title) => alert(`Placing bid on ${title}`);
+      const view3D = (title) => alert(`Viewing ${title} in 3D`);
+      const buyNow = (title) => alert(`Buying ${title} instantly`);
+
+      return (
+        <div className="p-4 bg-gray-100 min-h-screen">
+          <h2 className="text-2xl font-bold text-green-700 mb-4">Global Eco-Auctions</h2>
+          <p className="text-gray-600 mb-4">Bid on unique items and patents!</p>
+          <div className="grid grid-cols-2 gap-4">
+            {auctions.map((auction) => (
+              <div key={auction.id} className="bg-white p-4 rounded-lg shadow-md">
+                <img src={auction.image} alt={auction.title} className="w-full h-32 object-cover rounded mb-2" />
+                <h3 className="text-green-700 font-semibold">{auction.title}</h3>
+                <p className="text-gray-800">Current Bid: ${auction.currentBid}</p>
+                <button
+                  onClick={() => view3D(auction.title)}
+                  className="bg-blue-600 text-white p-2 rounded mt-2 block text-center"
+                  aria-label={`View ${auction.title} in 3D`}
+                >
+                  View in 3D
+                </button>
+                <button
+                  onClick={() => placeBid(auction.title)}
+                  className="bg-green-600 text-white p-2 rounded mt-2 block text-center"
+                  aria-label={`Bid on ${auction.title}`}
+                >
+                  Place Bid
+                </button>
+                <button
+                  onClick={() => buyNow(auction.title)}
+                  className="bg-red-600 text-white p-2 rounded mt-2 block text-center"
+                  aria-label={`Buy ${auction.title} now`}
+                >
+                  Buy Now
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // CreatorStudioScreen Component
+    const CreatorStudioScreen = () => {
+      const tools = [
+        { id: 1, title: 'AI Content Optimizer', price: 9.99 },
+        { id: 2, title: 'NFT Creator', price: 0 },
+        { id: 3, title: 'Subscription Manager', price: 49.99 },
+      ];
+
+      const useTool = (title) => alert(`Using ${title}`);
+      const createNFT = () => alert('Creating eco-NFT');
+      const optimizeContent = () => alert('Optimizing content with AI');
+
+      return (
+        <div className="p-4 bg-gray-100 min-h-screen">
+          <h2 className="text-2xl font-bold text-green-700 mb-4">Creator Studio</h2>
+          <p className="text-gray-600 mb-4">Monetize your eco-content!</p>
+          {tools.map((tool) => (
+            <div key={tool.id} className="bg-white p-4 mb-4 rounded-lg shadow-md">
+              <h3 className="text-green-700 font-semibold">{tool.title}</h3>
+              <p className="text-gray-800">{tool.price > 0 ? `$${tool.price}/month` : 'Free'}</p>
+              <button
+                onClick={() => useTool(tool.title)}
+                className="bg-green-600 text-white p-2 rounded mt-2"
+                aria-label={`Use ${tool.title}`}
+              >
+                Use Now
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={createNFT}
+            className="bg-purple-600 text-white p-2 rounded mt-2"
+            aria-label="Create NFT"
+          >
+            Create NFT (Free)
+          </button>
+          <button
+            onClick={optimizeContent}
+            className="bg-pink-600 text-white p-2 rounded mt-2 ml-2"
+            aria-label="Optimize content"
+          >
+            Optimize Content ($9.99)
+          </button>
+        </div>
+      );
+    };
+
+    // InvestmentScreen Component
+    const InvestmentScreen = () => {
+      const investments = [
+        { id: 1, title: 'Eco-Startup Fund', stake: 1000, return: '10% Revenue' },
+        { id: 2, title: 'Eco-Coin Futures', stake: 100, return: '5% Profit' },
+      ];
+
+      const invest = (title) => alert(`Investing in ${title}`);
+      const pitchIdea = () => alert('Pitching to eco-incubator');
+      const tradeFutures = () => alert('Trading eco-coin futures');
+
+      return (
+        <div className="p-4 bg-gray-100 min-h-screen">
+          <h2 className="text-2xl font-bold text-green-700 mb-4">Eco Investment Hub</h2>
+          <p className="text-gray-600 mb-4">Grow your eco-wealth!</p>
+          {investments.map((inv) => (
+            <div key={inv.id} className="bg-white p-4 mb-4 rounded-lg shadow-md">
+              <h3 className="text-green-700 font-semibold">{inv.title}</h3>
+              <p className="text-gray-800">Stake: {inv.stake} Tokens</p>
+              <p className="text-gray-800">Return: {inv.return}</p>
+              <button
+                onClick={() => invest(inv.title)}
+                className="bg-green-600 text-white p-2 rounded mt-2"
+                aria-label={`Invest in ${inv.title}`}
+              >
+                Invest Now
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={pitchIdea}
+            className="bg-blue-600 text-white p-2 rounded mt-2"
+            aria-label="Pitch idea"
+          >
+            Pitch to Incubator
+          </button>
+          <button
+            onClick={tradeFutures}
+            className="bg-purple-600 text-white p-2 rounded mt-2 ml-2"
+            aria-label="Trade futures"
+          >
+            Trade Futures ($0.10/trade)
+          </button>
+        </div>
+      );
+    };
+
+    // App Component
+    const App = () => {
+      const [activeScreen, setActiveScreen] = useState('Feed');
+      const [isDarkMode, setIsDarkMode] = useState(false);
+      const [language, setLanguage] = useState('en');
+      const [isLowData, setIsLowData] = useState(false);
+
+      useEffect(() => {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js').catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+        }
+      }, []);
+
+      const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
+      const changeLanguage = (lang) => setLanguage(lang);
+      const toggleLowData = () => setIsLowData(!isLowData);
+
+      const screens = {
+        Feed: <FeedScreen />,
+        Auction: <AuctionScreen />,
+        CreatorStudio: <CreatorStudioScreen />,
+        Investment: <InvestmentScreen />,
+      };
+
+      return (
+        <div className={`${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} min-h-screen`}>
+          <nav className="bg-green-600 p-4 flex justify-between items-center">
+            <h1 className="text-white text-xl font-bold">EcoHero</h1>
+            <div className="flex space-x-2">
+              <button
+                onClick={toggleDarkMode}
+                className="text-white"
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDarkMode ? '☀️' : '🌙'}
+              </button>
+              <select
+                value={language}
+                onChange={(e) => changeLanguage(e.target.value)}
+                className="bg-white text-green-600 p-1 rounded"
+                aria-label="Select language"
+              >
+                <option value="en">English</option>
+                <option value="sw">Swahili</option>
+                <option value="aweer">Aweer</option>
+              </select>
+              <button
+                onClick={toggleLowData}
+                className="text-white"
+                aria-label={isLowData ? 'Disable low data mode' : 'Enable low data mode'}
+              >
+                {isLowData ? '📶' : '📴'}
+              </button>
+            </div>
+          </nav>
+          <div className="flex justify-around bg-green-700 p-2">
+            {Object.keys(screens).map((screen) => (
+              <button
+                key={screen}
+                onClick={() => setActiveScreen(screen)}
+                className={`text-white p-2 rounded ${activeScreen === screen ? 'bg-green-800' : ''}`}
+                aria-label={`Go to ${screen} screen`}
+              >
+                {screen}
+              </button>
+            ))}
+          </div>
+          <main>{screens[activeScreen]}</main>
+          <footer className="bg-green-600 text-white p-4 text-center">
+            <p>EcoHero © 2025 | Earn Eco-Tokens Today!</p>
+            <button className="bg-yellow-600 text-white p-2 rounded mt-2" aria-label="Refer a friend">
+              Refer & Earn 500 Tokens
+            </button>
+          </footer>
+        </div>
+      );
+    };
+
+    // Render App
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+      });
     }
   </script>
 </body>
